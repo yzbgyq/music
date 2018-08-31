@@ -1,8 +1,7 @@
 import {commonParams,options} from './conf'
 import jsonp from 'js/jsonp'
-import axios from 'axios'
-// 歌手数据
 
+// 歌手数据
 export function getSingerList() {
     const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
     const data = Object.assign({}, commonParams, {
@@ -33,3 +32,5 @@ export function getSingerList() {
     })
     return jsonp(url, data, options)
   }
+
+

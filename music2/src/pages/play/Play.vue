@@ -23,7 +23,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class='middle-r'></div>
+                    <Scroll class='middle-r' ref="lyricList" :data='currentLyric.lines'>
+                        <div class="lyric-warpper" >
+                            <div v-if="currentLyric">
+                                <p ref="lyricLine" :class="{'current':currentLineNum===index}" class="text" v-for="(line,index) in currentLyric.lines" :key="index">{{line.txt}}</p>
+                            </div>
+                        </div>
+                    </Scroll>
                 </div>
                 <div class='bottom'>
                     <div class='dot-wrapper'>
@@ -85,16 +91,21 @@ import {mapGetters,mapMutations} from 'vuex'
 import Progress from 'other/Progress'
 import {playMode} from 'js/config'
 import {shuffle} from 'js/utils'
+import lyric from 'lyric-parser'
+import Scroll from 'pages/other/Scroll'
 
 export default {
     data() {
         return {
             isPlay: false,  // 控制音乐是否能播放
             currentTime:'', //当前播放的时间
+            currentLyric:'',    //歌词
+            currentLineNum:0,   //初始化歌曲播放的行数
         }
     },
     components: {
         Progress,
+        Scroll,
     },
     computed: {
         // 是否全屏 ，播放列表,当前播放的歌曲,歌曲是否在播放,当前歌曲的下标,播放模式,播放列表
@@ -292,6 +303,27 @@ export default {
             } else {
                 this.next()
             }
+        },
+
+        // 获取歌词
+        getLyric() {
+            this.currentSong.getLyric().then(res => {
+                
+                this.currentLyric = new lyric(res,this.handleLyric)
+                if (this.playing) {
+                    this.currentLyric.play()
+                }
+            })
+        },
+
+        handleLyric({lineNum,txt}) {
+            this.currentLineNum = lineNum
+            if (lineNum > 5) {
+                let lineEl = this.$refs.lyricLine[lineNum-5]
+                this.$refs.lyricList.scrollToElement(lineEl,1000)
+            } else {
+                this.$refs.lyricList.scrollTo(0,0,1000)
+            }
         }
     },
 
@@ -306,6 +338,7 @@ export default {
             }
             this.$nextTick(() => {
                  this.$refs.audio.play()
+                 this.getLyric()    // 获取歌词
             })
         },
         playing(newPlay) {
@@ -410,6 +443,17 @@ export default {
                     width: 100%
                     height: 100%
                     overflow: hidden      
+                    .lyric-warpper
+                        width: 80%;
+                        margin: 0 auto;
+                        overflow: hidden;
+                        text-align: center;
+                        .text
+                            line-height: 64px;
+                            color: hsla(0,0%,100%,.5);
+                            font-size: 28px;
+                        .current
+                            color #fff;    
             .bottom
                 position: absolute
                 bottom: 100px
