@@ -15,8 +15,11 @@
                     <h1 class='title' v-html='currentSong.name'></h1>
                     <h2 class='subtitle'>{{currentSong.singer}}</h2>
                 </div>
-                <div class='middle'>
-                    <div class='middle-l'>
+                <div class='middle' 
+                     @touchstart.prevent='middleTouchStart'
+                     @touchmove.prevent='middleTouchMove'
+                     @touchend.prevent='middleTouchEnd'>
+                    <div class='middle-l' ref="middleL">
                         <div class='cd-wrapper' ref='cdWrapper'>
                             <div class='cd' :class='cdCss'>
                                 <img class='image' :src="currentSong.image" alt="" srcset="">
@@ -33,8 +36,8 @@
                 </div>
                 <div class='bottom'>
                     <div class='dot-wrapper'>
-                        <span class='dot active'></span>
-                        <span class='dot'></span>
+                        <span class='dot' :class="{'active':currentShow=='cd'}"></span>
+                        <span class='dot' :class="{'active':currentShow=='lyric'}"></span>
                     </div>
                     <Progress :progressTime='currentSong.duratin' :currentTimer='currentTime' @percentChange='percentChange'/>
                 <div class='operators'>
@@ -87,6 +90,7 @@
 import animations from 'create-keyframe-animation'
 import {prefixStyle} from 'js/dom'
 const transform = prefixStyle('transform')
+const transitionDuration = prefixStyle('transitionDuration')
 import {mapGetters,mapMutations} from 'vuex'
 import Progress from 'other/Progress'
 import {playMode} from 'js/config'
@@ -101,6 +105,8 @@ export default {
             currentTime:'', //当前播放的时间
             currentLyric:'',    //歌词
             currentLineNum:0,   //初始化歌曲播放的行数
+            currentShow: 'cd',  //默认选中哪一个
+            touch:{},
         }
     },
     components: {
@@ -324,10 +330,63 @@ export default {
             } else {
                 this.$refs.lyricList.scrollTo(0,0,1000)
             }
-        }
+        },
+
+        middleTouchStart(e) {
+            this.touch.init = true
+            const touch = e.touches[0]
+            this.touch.startX = touch.pageX  //记录点击的位置
+            this.touch.startY = touch.pageY  //记录点击的位置
+        },
+
+        middleTouchMove(e) {
+            if (!this.touch.init) return
+            const touch = e.touches[0]
+            const daltaX = touch.pageX - this.touch.startX  // 滑动的位置
+            const daltaY = touch.pageY - this.touch.startY  // 滑动的位置
+            // 当纵轴的偏移大于横轴的偏移，就不左右移动
+            if (Math.abs(daltaY) > Math.abs(daltaX)) return
+            // 记录歌词的起始位置
+            const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
+            const offsetWidth = Math.min(0,Math.max(-window.innerWidth,left + daltaX)) 
+            this.$refs.lyricList.$el.style[transform] = `translate3d(${offsetWidth}px,0,0)` 
+            this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
+            this.$refs.middleL.style.opacity = 1 - this.touch.percent
+            this.$refs.lyricList.$el.style[transitionDuration] = 0 
+            this.$refs.middleL.style[transitionDuration] = 0 
+
+        },
+
+        middleTouchEnd(e) {
+            let offsetWidth
+            let opacity
+            if (this.currentShow === 'cd') {
+               if (this.touch.percent > 0.1) {
+                   offsetWidth = -window.innerWidth
+                   this.currentShow = 'lyric'
+                   opacity = 0
+               } else {
+                   offsetWidth = 0
+                   opacity = 1
+               }
+            } else {
+                if (this.touch.percent < 0.9) {
+                    offsetWidth = 0
+                    this.currentShow = 'cd'
+                    opacity = 1
+                } else {
+                    offsetWidth = -window.innerWidth
+                    opacity = 0
+                }
+            }
+            const timer = 500
+            this.$refs.lyricList.$el.style[transform] = `translate3d(${offsetWidth}px,0,0)` 
+            this.$refs.lyricList.$el.style[transitionDuration] = `${timer}ms` 
+            this.$refs.middleL.style.opacity = opacity
+            this.$refs.middleL.style[transitionDuration] = `${timer}ms` 
+
     },
-
-
+    },
 
     watch: {
         //currentSong发生变化的时候去播放音乐
