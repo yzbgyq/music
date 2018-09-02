@@ -92,7 +92,7 @@ import {prefixStyle} from 'js/dom'
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
 import {mapGetters,mapMutations} from 'vuex'
-import Progress from 'other/Progress'
+import Progress from './components/PlayProgress'
 import {playMode} from 'js/config'
 import {shuffle} from 'js/utils'
 import lyric from 'lyric-parser'

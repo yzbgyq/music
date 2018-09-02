@@ -28,9 +28,29 @@ export async function getRecommendList() {
     const res = await axios.get('/api/getRecommendList',{
         params:data
     })
-
     if (res.data.data.data.list) {
         return Promise.resolve(res.data.data.data.list)
     }
-
 }
+
+// 首页歌单列表
+export async function getRecommendMusic(disstid) {
+    const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+    const data = Object.assign({}, commonParams, {
+      disstid,
+      type: 1,
+      json: 1,
+      utf8: 1,
+      onlysong: 0,
+      platform: 'yqq',
+      hostUin: 0,
+      needNewCode: 0,
+      jsonpCallback: 'playlistinfoCallback'
+    })
+    const res = await axios.get('/api/getRecommendMusic',{
+        params:data
+    })
+    let newData = res.data.data.slice(21,-1)
+    let newData2 = JSON.parse(newData) 
+    return Promise.resolve(newData2.cdlist[0])
+  }

@@ -7,6 +7,8 @@ export const PLAYLIST = 'PLAYLIST'
 export const SEQUENCELIST = 'SEQUENCELIST'
 export const MODE= 'MODE'
 export const CURRENTINDEX= 'CURRENTINDEX'
+export const MUSICDESC= 'MUSICDESC'
+
 
 
 

@@ -1,6 +1,6 @@
 <template>
         <ul>
-            <li v-for="val of HandleRecommendList" :key="val.dissid">
+            <li v-for="val of HandleRecommendList" :key="val.dissid" @click="play(val)">
                 <img  v-lazy="val.imgurl">
                 <div class="text">
                     <h2 v-html="val.name"></h2>
@@ -44,7 +44,10 @@ export default {
         }
     },
     methods: {
-
+        // 歌单详情
+        play(val) {
+            this.$emit('recommendMusic',val)
+        }
     }
 }
 </script>

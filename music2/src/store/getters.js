@@ -10,6 +10,8 @@ export const currentIndex = state => state.currentIndex
 export const currentSong = (state) => { //当前播放的下标对应的那首歌曲
     return state.playlist[state.currentIndex] || {}
 }
+export const musicDesc = state => state.musicDesc
+
 
 
 

@@ -22,6 +22,10 @@ import * as types from './mutations-type'
     [types.CURRENTINDEX](state,currentIndex){
         state.currentIndex = currentIndex
     },
+    [types.MUSICDESC](state,musicDesc){
+        state.musicDesc = musicDesc
+    },
+
 
 
 }

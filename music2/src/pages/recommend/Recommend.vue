@@ -4,9 +4,10 @@
             <div>
                 <RecommendSwiper :swiperList='recommend.slider'/>
                 <RecommendTitle/>
-                <RecommendList :recommendList='recommendList'/>
+                <RecommendList :recommendList='recommendList' @recommendMusic='recommendMusic'/>
             </div>
         </Scroll>
+        <router-view/>
     </div>
 </template>
 
@@ -15,8 +16,11 @@ import RecommendSwiper from './components/RecommendSwiper'
 import RecommendTitle from './components/RecommendTitle'
 import RecommendList from './components/RecommendList'
 import Scroll from 'pages/other/Scroll'
-import { getRecommendSwiper, getRecommendList } from 'api/recommend'
+// import { getRecommendSwiper, getRecommendList, getRecommendMusic } from 'api/recommend'
+import * as recommendApi from 'api/recommend';
+import Singer from 'js/singerClass'
 import axios from 'axios'
+import {mapMutations} from 'vuex'
 export default {
     name:'Recommend',
     components: {
@@ -40,18 +44,26 @@ export default {
     methods: {
         // 获取轮播图
         async _getRecommend() {
-           const res = await getRecommendSwiper()
+           const res = await recommendApi.getRecommendSwiper()
             this.recommend = res.data
         },
         // 获取歌单列表
         async _getRecommendList() {
-          const res = await getRecommendList()
+          const res = await recommendApi.getRecommendList()
                 this.recommendList = res
         },
-        // loadImg() {   // 图片加载完了再调用refresh重新高度
-        //   console.log('f');
-        //   this.$refs.scroll.refresh()
-        // }
+        
+        // 获取热门歌单推荐
+        recommendMusic(val) {
+            this.setInfoMusic(val)
+            // recommendApi.getRecommendMusic(val.dissid).then(res => {
+            // })
+            this.$router.push({path:`/recommend/${val.dissid}`})
+        },
+        
+        ...mapMutations({
+            setInfoMusic:'MUSICDESC'
+        })
     }
 }
 </script>

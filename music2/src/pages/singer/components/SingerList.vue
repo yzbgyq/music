@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     items(item) {
+      console.log(item)
       this.setSinger(item)
       this.$router.push({path:`/singer/${item.id}`})
     },

@@ -71,6 +71,7 @@ export default {
             return `background-image: url(${this.bgImg}); padding-top: 70%; height: 0px; transform: scale(1); z-index: 0;`
         }
     },
+
     methods: {
         back() {
             this.$router.go(-1)
@@ -88,17 +89,18 @@ export default {
         ...mapActions(['selectPlay','randomPlay']),
         // 随机播放
         random() {
-            
             this.randomPlay({
                 list:this.songs
             })
         }
     },
+
     mounted() {
         this.imgHeight = this.$refs.bgImg.clientHeight
         this.mintranslateY = -this.imgHeight + RESOLVE_HEIGHT
         this.$refs.list.$el.style.top = `${this.imgHeight}px`
     },
+
     watch: {
         scrollY(newY) {
            let translateY = Math.max(this.mintranslateY,newY);
