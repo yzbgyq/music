@@ -32,6 +32,7 @@ export default {
         async _getSingerDetail() {
             if (!this.singer.id) {  //如果没有这个id，就返回上一页
                 this.$router.go(-1)
+                return
             }
             const res = await getSingerDetail(this.singer.id)
             if (res.code == 0) {

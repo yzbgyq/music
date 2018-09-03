@@ -72,4 +72,21 @@ router.get('/getRecommendMusic',async (ctx,next) => {
   }
 })
 
+// 排行榜歌单
+router.get('/getRank',async (ctx,next) => {
+  const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_opt.fcg'
+  const params = ctx.query
+  const res = await axios.get(url,{
+    headers: {
+      referer: 'https://c.y.qq.com/',
+      authority: 'c.y.qq.com'
+    },
+    params: params
+  })
+  const data = res.data
+  ctx.body = {
+    data
+  }
+})
+
 module.exports = router

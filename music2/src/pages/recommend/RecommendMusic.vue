@@ -33,10 +33,10 @@ export default {
         async _getSingerDetail() {
             if (!this.musicDesc.dissid) {  //如果没有这个id，就返回上一页
                 this.$router.go(-1)
-            }
+                return
+            } 
             getRecommendMusic(this.musicDesc.dissid).then(res => {
                 this.songs = this.normalize(res.songlist)
-                
             })
        
         },
@@ -44,7 +44,6 @@ export default {
         normalize(list) {
             let ret = []
             list.forEach(item => {
-
                 if (item.songid && item.albumid) {
                     ret.push(createSong(item))
                 }

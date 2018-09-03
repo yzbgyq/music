@@ -23,6 +23,7 @@ import axios from 'axios'
 import {mapMutations} from 'vuex'
 import {playlistMixin} from 'js/mixin'
 
+
 export default {
     mixins:[playlistMixin],
     name:'Recommend',
@@ -59,8 +60,6 @@ export default {
         // 获取热门歌单推荐
         recommendMusic(val) {
             this.setInfoMusic(val)
-            // recommendApi.getRecommendMusic(val.dissid).then(res => {
-            // })
             this.$router.push({path:`/recommend/${val.dissid}`})
         },
         
