@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import {playlistMixin} from 'js/mixin'
 import Scroll from './Scroll'
 import MusicList from './MusicList'
 import {prefixStyle} from 'js/dom'
@@ -38,6 +39,7 @@ const RESOLVE_HEIGHT = 40   //预留高度
 const transform = prefixStyle('transform')
 const backdrop = prefixStyle('backdrop-filter')
 export default {
+    mixins:[playlistMixin],
     props: {
         bgImg: { //背景图
             type:String,
@@ -92,6 +94,11 @@ export default {
             this.randomPlay({
                 list:this.songs
             })
+        },
+        handlePlaylist(playlist) {
+            const bottom = playlist.length > 0 ? '60px' : 0
+            this.$refs.list.$el.style.bottom = bottom
+            this.$refs.list.refresh()
         }
     },
 

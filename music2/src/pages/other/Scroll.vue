@@ -50,7 +50,7 @@ export default {
       this.scroll && this.scroll.disable();
     },
     refresh() {
-      this.refresh && this.scroll.refresh();
+      this.scroll && this.scroll.refresh();
     },
     scrollToElement() {
       this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments);

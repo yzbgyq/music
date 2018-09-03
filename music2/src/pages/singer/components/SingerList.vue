@@ -75,9 +75,15 @@ export default {
         }
 
     },
+
     ...mapMutations({
       setSinger:'SINGER'
-    })
+    }),
+
+    refresh() {
+      this.$refs.scroll.refresh()
+    }
+    
   },
   mounted() {
     

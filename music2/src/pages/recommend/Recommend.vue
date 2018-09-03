@@ -1,5 +1,5 @@
 <template>
-    <div class="recommend-warpper">
+    <div class="recommend-warpper" ref="recommend">
         <Scroll :data='recommendList' class='recommend' ref='scroll'>
             <div>
                 <RecommendSwiper :swiperList='recommend.slider'/>
@@ -21,7 +21,10 @@ import * as recommendApi from 'api/recommend';
 import Singer from 'js/singerClass'
 import axios from 'axios'
 import {mapMutations} from 'vuex'
+import {playlistMixin} from 'js/mixin'
+
 export default {
+    mixins:[playlistMixin],
     name:'Recommend',
     components: {
         RecommendSwiper,
@@ -63,7 +66,13 @@ export default {
         
         ...mapMutations({
             setInfoMusic:'MUSICDESC'
-        })
+        }),
+
+        handlePlaylist(playlist) {
+            const bottom = playlist.length > 0 ? '60px' : 0
+            this.$refs.recommend.style.bottom = bottom
+            this.$refs.scroll.refresh()
+        }
     }
 }
 </script>
