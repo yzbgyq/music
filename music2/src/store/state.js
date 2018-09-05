@@ -9,6 +9,8 @@ const state = {
     mode: playMode.sequence,    // 播放模式
     currentIndex: -1,           // 当前播放的索引
     musicDesc:{},               // 首页歌单列表
+    topList:{},                 // 排行榜数据
+    searchText:'',              // 搜索框文字
 }
 
 

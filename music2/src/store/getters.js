@@ -11,6 +11,9 @@ export const currentSong = (state) => { //当前播放的下标对应的那首�
     return state.playlist[state.currentIndex] || {}
 }
 export const musicDesc = state => state.musicDesc
+export const topList = state => state.topList
+export const searchText = state => state.searchText
+
 
 
 

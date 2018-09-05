@@ -24,6 +24,11 @@ export default {
       //监听scroll滚动
       type: Boolean,
       default: false
+    },
+    // 是否开启上拉刷新
+    pullup: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -41,6 +46,15 @@ export default {
         this.scroll.on("scroll", pos => {
           that.$emit("scroll", pos);
         });
+      }
+
+      // 上拉加载
+      if (this.pullup) {
+        this.scroll.on('scrollEnd',() => {
+          if (this.scroll.y <= this.scroll.maxScrollY + 50) {
+            this.$emit('scrollToEnd')
+          }
+        })
       }
     },
     enable() {

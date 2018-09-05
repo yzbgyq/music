@@ -25,6 +25,12 @@ import * as types from './mutations-type'
     [types.MUSICDESC](state,musicDesc){
         state.musicDesc = musicDesc
     },
+    [types.TOPLIST](state,topList){
+        state.topList = topList
+    },
+    [types.SEARCHTEXT](state,searchText){
+        state.searchText = searchText
+    },
 
 
 

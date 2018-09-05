@@ -21,10 +21,9 @@ export default class singerDetails {
         return new Promise((resolve,reject)=> {
             getLyric(this.mid).then( res => {
                 this.lyric = Base64.decode(res.data.lyric) 
-                resolve(this.lyric )
+                resolve(this.lyric)
             })
         }) 
-        
     }
 }
 
@@ -38,12 +37,12 @@ export function  createSong(musicData) {
         album:musicData.albumname,
         duratin:musicData.interval,
         image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-        url: `http://dl.stream.qqmusic.qq.com/http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=7594756179&vkey=1AFBF5E3F71481BE4DEC3098FC111D52A4F7E52B3BA4CE729B8296A0B8E5BD9A41FF40F8E07E18AD5215EF4AF1BA3DF7D14D86BA1BCAEDFD&uin=0&fromtag=38`
+        url: `http://dl.stream.qqmusic.qq.com/http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=1911262531&vkey=79B059C5BC334CF9CA7FE461C0935FAA1A8A1BB4F88BDCB259BF952B0A14A40121127236BB07A67B5D24F4FC69111592CD43EA8403795A4E&uin=0&fromtag=38`
     })
 }                                                 
 
 // 歌手单独处理
-function filter(singerName) {
+ function filter(singerName) {
     let ret = []
     if (!singerName) {
         return ''

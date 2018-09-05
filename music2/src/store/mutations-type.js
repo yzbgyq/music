@@ -5,9 +5,12 @@ export const PLAYING = 'PLAYING'
 export const FULLSREEN = 'FULLSREEN'
 export const PLAYLIST = 'PLAYLIST'
 export const SEQUENCELIST = 'SEQUENCELIST'
-export const MODE= 'MODE'
-export const CURRENTINDEX= 'CURRENTINDEX'
-export const MUSICDESC= 'MUSICDESC'
+export const MODE = 'MODE'
+export const CURRENTINDEX = 'CURRENTINDEX'
+export const MUSICDESC = 'MUSICDESC'
+export const TOPLIST = 'TOPLIST'
+export const SEARCHTEXT = 'SEARCHTEXT'
+
 
 
 

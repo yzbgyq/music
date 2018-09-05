@@ -19,7 +19,7 @@
         <div class="bg-layer" ref="layer"></div>
         <Scroll :data='songs' class="list" ref="list" :listenScroll='listenScroll' :probeType='probeType' @scroll="scroll">
             <div class="song-list-wrapper">
-                <MusicList :songs='songs' @select='selectItem'/>
+                <MusicList :songs='songs' @select='selectItem' :isRank='isRank'/>
                 <div class="loading" v-show="!songs.length">
                   <Loading/>
                 </div>
@@ -52,6 +52,10 @@ export default {
         title: {   //歌手顶部名字
             type:String,
             default:''
+        },
+        isRank:{
+            type: Boolean,
+            default: false
         }
     },
     data() {

@@ -3,6 +3,9 @@
      <div class="song-list">  
          <ul>
              <li v-for="(val,index) of songs" :key="val.id" @click='selectItem(val,index)'>
+                 <div class="rank" v-if="isRank">
+                     <span :class="iconClass(index)">{{iconText(index)}}</span>
+                 </div>
                  <div class="content">
                      <h2 class="name">{{val.name}}</h2>
                      <p class="desc">{{getDesc(val)}}</p>
@@ -18,16 +21,36 @@ export default {
         songs:{
             type:Array,
             default:[]
+        },
+        isRank:{
+            type: Boolean,
+            default: false
         }
     },
     methods: {
         getDesc(val) {
             return `${val.singer} 。${val.album}`
         },
+
         selectItem(val,index) {
             // 事件派发给父组件
             this.$emit('select',val,index)
+        },
+        
+        iconClass(index) {
+            if (index <=2 ) {
+                return `icon icon${index}`
+            } else {
+                return `text`
+            }
+        },
+        
+        iconText(index) {
+            if (index > 2) {
+                return index
+            }
         }
+
     }
 }
 </script>
@@ -52,5 +75,26 @@ export default {
                 ellipsis()
                 margin-top: 8px
                 color $color-text-d
+        .rank
+            flex 0 0 50px
+            width 50px
+            margin-right 50px
+            text-align center
+            .icon
+                display inline-block
+                width 50px
+                height 48px
+                background-size: 50px 48px
+                &.icon0
+                    bg-image('first')
+                &.icon1
+                    bg-image('second')    
+                &.icon2
+                    bg-image('third')
+            .text
+                color: #ffcd32
+                font-size: 36px
+            
+
 </style>
 

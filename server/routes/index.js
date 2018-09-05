@@ -89,4 +89,21 @@ router.get('/getRank',async (ctx,next) => {
   }
 })
 
+
+// 搜索结果
+router.get('/search',async (ctx,next) => {
+  const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
+  const params = ctx.query
+  const res = await axios.get(url,{
+    headers: {
+      referer: 'https://c.y.qq.com/',
+      authority: 'c.y.qq.com'
+    },
+    params: params
+  })
+  const data = res.data
+  ctx.body = {
+    data
+  }
+})
 module.exports = router

@@ -2,8 +2,8 @@
     <div class="rank" ref="rank">
         <Scroll class="toplist" :data='songList && songList' ref="scroll">
             <ul>
-                <li class="item" v-for="val in songList" :key='val.topID' @click="rankMusic(val.topID)">
-                    <div class="icon"><img :src="val.pic_v12" width="100" height="100" alt="" srcset=""></div>
+                <li class="item" v-for="val in songList" :key='val.topID' @click="rankMusic(val)">
+                    <div class="icon"><img v-lazy='val.pic_v12' width="100" height="100" alt="" srcset=""></div>
                     <ul class="songlist">
                         <li class="song" v-for="(item,index) in val.songlist.slice(0,3)" :key='index' >
                            <span>{{index + 1}}</span>
@@ -12,6 +12,9 @@
                     </ul>
                 </li>
             </ul>
+            <div class="loading" v-show="!songList.length">
+                <Loading/>
+            </div>
         </Scroll>
         <router-view/>
     </div>
@@ -21,6 +24,8 @@
 import Scroll from 'pages/other/Scroll'
 import {getRank} from 'api/rank'
 import {playlistMixin} from 'js/mixin'
+import Loading from 'pages/other/BaseLoading'
+import {mapMutations} from 'vuex'
 export default {
     mixins:[playlistMixin],
     data() {
@@ -30,11 +35,11 @@ export default {
     },
     components: {
         Scroll,
+        Loading,
     },
 
     created() {
       getRank().then(res => {
-          console.log(res);
           this.songList = res.List
       })
     },
@@ -47,9 +52,13 @@ export default {
         },
         
         rankMusic(item) {
-            console.log(item);
-            
-        }
+            this.setTopList(item)
+            this.$router.push({path:`/rank/${item.topID}`})
+        },
+        
+        ...mapMutations({
+            setTopList:'TOPLIST'
+        })
     }
 }
 </script>
@@ -58,7 +67,7 @@ export default {
  .rank
     position: fixed;
     width: 100%;
-    top: 176px;
+    top: 156px;
     bottom: 0;
     .toplist
         height: 100%;
@@ -88,6 +97,11 @@ export default {
                     overflow: hidden;
                     white-space: nowrap;
                     line-height: 52px;
-
+    .loading
+      position: absolute
+      top: 40%
+      left: 50%
+      width 100%
+      transform translate(-50%,-50%)
 </style>
 

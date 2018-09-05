@@ -16,14 +16,11 @@ import RecommendSwiper from './components/RecommendSwiper'
 import RecommendTitle from './components/RecommendTitle'
 import RecommendList from './components/RecommendList'
 import Scroll from 'pages/other/Scroll'
-// import { getRecommendSwiper, getRecommendList, getRecommendMusic } from 'api/recommend'
 import * as recommendApi from 'api/recommend';
 import Singer from 'js/singerClass'
 import axios from 'axios'
 import {mapMutations} from 'vuex'
 import {playlistMixin} from 'js/mixin'
-
-
 export default {
     mixins:[playlistMixin],
     name:'Recommend',
@@ -31,8 +28,9 @@ export default {
         RecommendSwiper,
         RecommendTitle,
         RecommendList,
-        Scroll
+        Scroll,
     },
+    
     data() {
         return {
             recommend: [],
@@ -41,16 +39,17 @@ export default {
     },
 
     created() {
-      // setTimeout(() => {})
         this._getRecommend()
         this._getRecommendList()
     },
     methods: {
+        
         // 获取轮播图
         async _getRecommend() {
            const res = await recommendApi.getRecommendSwiper()
             this.recommend = res.data
         },
+
         // 获取歌单列表
         async _getRecommendList() {
           const res = await recommendApi.getRecommendList()
