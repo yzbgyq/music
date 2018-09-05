@@ -71,4 +71,5 @@ export default {
             .icon-dismiss
                 color: #eee;
                 font-size 32px
+                margin-right 20px
 </style>

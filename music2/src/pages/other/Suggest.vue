@@ -1,15 +1,17 @@
 <template>
     <!-- 搜索结果相关显示 -->
     <div class="search-result">
-        <Scroll class="suggest" :data='result' :pullup='pullup' @scrollToEnd='scrollToEnd'>
+        <Scroll class="suggest" :data='result' :pullup='pullup' @scrollToEnd='scrollToEnd' ref="scroll">
             <ul class="item-warpper">
-                <li class="item" v-for="(val,index) in result" :key="index">
+                <li class="item" v-for="(val,index) in result" :key="index" @click="item(val)">
                     <div class="icon"><i :class="iconClass(val)"></i></div>
                     <div class="name"><p class="text" v-html="getName(val)"></p></div>
                 </li>
+                <li class="nomore" v-show="totalnum==0 && result.length>20">没有更多了~~</li>
             </ul>
         </Scroll>
-        <Loading v-if="!result.length"/>
+        <Loading v-show="isLoding"/>
+        <router-view/>
     </div>
 </template>
 
@@ -18,7 +20,8 @@ import {searchs} from 'api/search'
 import Loading from 'pages/other/BaseLoading'
 import Scroll from 'pages/other/Scroll'
 import { createSong } from 'js/singerDetailsClass'
-
+import {mapMutations} from 'vuex'
+import Singer from 'js/singerClass'
 const SINGER = 'singer'
 export default {
     props:{
@@ -37,7 +40,8 @@ export default {
             page: 1,
             result:[],
             pullup: true,
-            totalnum:0
+            totalnum:0,
+            isLoding:true
         }
     },
     components: {
@@ -48,17 +52,17 @@ export default {
     methods: {
         _search(flag,page=1) {
             page = this.page
+            this.isLoding = true
+            
             searchs(this.query,page,this.showSinger).then(res => {
                 if (res.code == 0) {
+                    this.isLoding = false
                     this.totalnum = res.data.song.totalnum
                     if (flag) {
                         const arr = [...this.result, ...this.genResult(res.data)]
                         this.result = arr
-                        console.log(res.data);
                     } else {
                         this.result = this.genResult(res.data)
-                        console.log(res.data);
-                        
                     }
                 }
             })
@@ -107,15 +111,37 @@ export default {
         scrollToEnd() {
             this.page++
             if (this.totalnum == 0) {
+                this.$refs.scroll.refresh()
                 return
             }
             this._search(true,this.page)
             
-        }
+        },
+
+        item(val) {
+            if (val.type && val.type == 'singer') {
+                const singer = new Singer({
+                    id: val.singermid,
+                    name: val.singername
+                })
+                this.setSinger(singer)
+                this.$router.push({path:`/search/${val.singermid}`})
+            } else {
+                console.log(val);
+                
+            }
+            
+        },
+
+        ...mapMutations({
+            setSinger:'SINGER'
+        }),
     },
     
     watch: {
         query() {
+            this.$refs.scroll.scrollTo(0,0)
+            this.page = 1
             this._search()
         }
     }
@@ -137,6 +163,8 @@ export default {
                 display: flex;
                 align-items: center;
                 padding-bottom: 40px;
+                &.last-child
+                    padding-bottom 0
                 .icon
                     flex: 0 0 60px;
                     width: 60px;
@@ -152,6 +180,13 @@ export default {
                         text-overflow: ellipsis;
                         overflow: hidden;
                         white-space: nowrap;
+                
+            .nomore
+                color #eee           
+                text-align center
+                height 50px
+                line-height 50px
+                font-size 28px 
     .loading
       position: absolute
       top: 40%

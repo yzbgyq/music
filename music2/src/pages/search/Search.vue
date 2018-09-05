@@ -39,7 +39,6 @@ export default {
         },
         // 点击派发事件
         queryText(txt) {
-            console.log(txt);
             // 把搜索的关键字传递给搜索框
             this.$refs.searchBox.queryText(txt)
         }

@@ -17,7 +17,7 @@ export default new Router({
     { path: '/recommend',name: 'Recommend',component: Recommend,children:[{path:':id',component:RecommendMusic}]},
     { path: '/singer',name: 'Singer',component: Singer,meta:{title:'歌手'},children:[{path:':id',component:SingerDetails}]},
     { path: '/rank',name: 'Rank',component: Rank,meta:{title:'排行'},children:[{path:':id',component:RankList}]},
-    { path: '/search',name: 'Search',component: Search,meta:{title:'搜索'}},
+    { path: '/search',name: 'Search',component: Search,meta:{title:'搜索'},children:[{path:':id',component:SingerDetails}]},
     { path: '*',redirect:'/'}
   ]
 })
