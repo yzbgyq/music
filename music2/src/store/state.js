@@ -4,7 +4,7 @@ const state = {
     singer:{},                  // 歌手信息
     playing: false,             // 播放时候暂停
     fullScreen: false,          // 播放器是否全屏
-    playlist: [],               // 播放列表
+    playlist: [],               // 点击播放后播放列表
     sequenceList:[],            // 播放的歌曲列表，顺序列表。原始列表
     mode: playMode.sequence,    // 播放模式
     currentIndex: -1,           // 当前播放的索引

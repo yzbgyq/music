@@ -94,12 +94,27 @@ const getRandomInt = function(min,max) {
     return (Math.random() * (max - min + 1) + min) | 0
 }
 
-
-
+/**
+ * 函数节流
+ * @param func 需要节流的函数
+ * @param delay 时间
+ */
+const debounce = function(func,delay) {
+    let timer
+    return function(...args)  {
+        if (timer) {
+            clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+            func.apply(this,args)
+        },delay)
+    }
+}
 export {
     chunk,  //数组分块
     throttle,  //函数节流
     prefix,    //各种浏览器的css前缀
     getRandomInt,   //获取多少道多少之间的随机整数
     shuffle,    //数组随机打乱(洗牌函数)
+    debounce,//函数节流
 }

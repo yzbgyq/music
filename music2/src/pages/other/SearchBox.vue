@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import {debounce} from 'js/utils'
 export default {
     props:{
         placeholder:{
@@ -35,11 +36,13 @@ export default {
     },
     
     created () {
-        this.$watch('query',(newQuery) => {
+        this.$watch('query',debounce((newQuery) => {
             if (this.query) {
                 this.$emit('queryTxt',newQuery)
             }
-        })
+        },500))
+
+      
     }
     
 }

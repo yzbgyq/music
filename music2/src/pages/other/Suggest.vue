@@ -1,14 +1,18 @@
 <template>
     <!-- 搜索结果相关显示 -->
-    <div class="search-result">
+    <div class="search-result" ref="search">
         <Scroll class="suggest" :data='result' :pullup='pullup' @scrollToEnd='scrollToEnd' ref="scroll">
-            <ul class="item-warpper">
-                <li class="item" v-for="(val,index) in result" :key="index" @click="item(val)">
-                    <div class="icon"><i :class="iconClass(val)"></i></div>
-                    <div class="name"><p class="text" v-html="getName(val)"></p></div>
-                </li>
-                <li class="nomore" v-show="totalnum==0 && result.length>20">没有更多了~~</li>
-            </ul>
+            <div>   
+                <div v-if="noResult" class="noResult">没有搜索结果噢~~</div>
+                <ul class="item-warpper">
+                    <li class="item" v-for="(val,index) in result" :key="index" @click="item(val)">
+                        <div class="icon"><i :class="iconClass(val)"></i></div>
+                        <div class="name"><p class="text" v-html="getName(val)"></p></div>
+                    </li>
+                    <li class="nomore" v-show="totalnum==0 && result.length>20">没有更多了~~</li>
+                </ul>
+            </div>
+
         </Scroll>
         <Loading v-show="isLoding"/>
         <router-view/>
@@ -22,8 +26,11 @@ import Scroll from 'pages/other/Scroll'
 import { createSong } from 'js/singerDetailsClass'
 import {mapMutations} from 'vuex'
 import Singer from 'js/singerClass'
+import {playlistMixin} from 'js/mixin'
+
 const SINGER = 'singer'
 export default {
+    mixins:[playlistMixin],
     props:{
         query: {
             type: String,
@@ -41,7 +48,8 @@ export default {
             result:[],
             pullup: true,
             totalnum:0,
-            isLoding:true
+            isLoding:true,
+            noResult: false
         }
     },
     components: {
@@ -58,11 +66,17 @@ export default {
                 if (res.code == 0) {
                     this.isLoding = false
                     this.totalnum = res.data.song.totalnum
+                    if (!res.data.song.list.length) {
+                        this.noResult = true
+                    }
+                    console.log(res.data);
                     if (flag) {
                         const arr = [...this.result, ...this.genResult(res.data)]
                         this.result = arr
                     } else {
                         this.result = this.genResult(res.data)
+                        
+                        
                     }
                 }
             })
@@ -128,20 +142,25 @@ export default {
                 this.$router.push({path:`/search/${val.singermid}`})
             } else {
                 console.log(val);
-                
             }
-            
         },
 
         ...mapMutations({
             setSinger:'SINGER'
         }),
+
+        handlePlaylist(playlist) {
+            const bottom = playlist.length > 0 ? '60px' : 0
+            this.$refs.search.style.bottom = bottom
+            this.$refs.scroll.refresh()
+        },
     },
     
     watch: {
         query() {
             this.$refs.scroll.scrollTo(0,0)
             this.page = 1
+            this.noResult = false
             this._search()
         }
     }
@@ -157,6 +176,12 @@ export default {
     .suggest
         height: 100%;
         overflow: hidden;
+        .noResult
+            font-size 28px
+            color #eeeeee
+            text-align center
+            height 100px
+            line-height 100px
         .item-warpper
             padding: 0 60px;
             .item
