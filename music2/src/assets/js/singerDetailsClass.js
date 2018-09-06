@@ -37,7 +37,7 @@ export function  createSong(musicData) {
         album:musicData.albumname,
         duratin:musicData.interval,
         image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-        url: `http://dl.stream.qqmusic.qq.com/http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=1911262531&vkey=79B059C5BC334CF9CA7FE461C0935FAA1A8A1BB4F88BDCB259BF952B0A14A40121127236BB07A67B5D24F4FC69111592CD43EA8403795A4E&uin=0&fromtag=38`
+        url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=7922575440&vkey=3E1B2A3AB5BF3379B5762D7AFE493DBB9A72C10693E9689016897F39D3F664A28BC12ABE14DE680CB35DCAC16209B247A8309B0DBDEC4B25&uin=0&fromtag=38`
     })
 }                                                 
 

@@ -3,7 +3,7 @@
         <Scroll class="toplist" :data='songList && songList' ref="scroll">
             <ul>
                 <li class="item" v-for="val in songList" :key='val.topID' @click="rankMusic(val)">
-                    <div class="icon"><img v-lazy='val.pic_v12' width="100" height="100" alt="" srcset=""></div>
+                    <div class="icon"><img v-lazy='val.pic_v12' alt="" srcset=""></div>
                     <ul class="songlist">
                         <li class="song" v-for="(item,index) in val.songlist.slice(0,3)" :key='index' >
                            <span>{{index + 1}}</span>
@@ -81,6 +81,9 @@ export default {
                 flex: 0 0 200px;
                 width: 200px;
                 height: 200px;
+                img 
+                    width 200px
+                    height 200px
             .songlist
                 flex: 1;
                 display: flex;

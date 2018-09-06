@@ -11,12 +11,16 @@
                         </li>
                     </ul>
                 </div>
+                <Storage @selectVal='selectVal' @delectOne='delectSearchHistory' @delectAll='delectSearchHistoryAll'/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import Storage from 'pages/other/Storage'
+import Scroll from 'pages/other/Scroll'
+import {mapActions} from 'vuex'
 export default {
     props: {
         hotKeyList:{
@@ -25,10 +29,20 @@ export default {
         }
     },
     
+    components: {
+        Scroll,
+        Storage
+    },
+
     methods: {
         searchText(txt) {
             this.$emit('queryText',txt)
-        }
+        },
+
+        selectVal(val) {
+            this.$emit('queryText',val)
+        },
+        ...mapActions(['delectSearchHistory','delectSearchHistoryAll'])
     }
 }
 </script>

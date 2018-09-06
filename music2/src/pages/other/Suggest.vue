@@ -1,7 +1,7 @@
 <template>
     <!-- 搜索结果相关显示 -->
     <div class="search-result" ref="search">
-        <Scroll class="suggest" :data='result' :pullup='pullup' @scrollToEnd='scrollToEnd' ref="scroll">
+        <Scroll class="suggest" :data='result' :pullup='pullup' @scrollToEnd='scrollToEnd' ref="scroll" :beforeScroll='beforeScroll' @beforeScroll='listbeforeScroll'>
             <div>   
                 <div v-if="noResult" class="noResult">没有搜索结果噢~~</div>
                 <ul class="item-warpper">
@@ -24,7 +24,7 @@ import {searchs} from 'api/search'
 import Loading from 'pages/other/BaseLoading'
 import Scroll from 'pages/other/Scroll'
 import { createSong } from 'js/singerDetailsClass'
-import {mapMutations} from 'vuex'
+import {mapMutations,mapActions} from 'vuex'
 import Singer from 'js/singerClass'
 import {playlistMixin} from 'js/mixin'
 
@@ -49,7 +49,8 @@ export default {
             pullup: true,
             totalnum:0,
             isLoding:true,
-            noResult: false
+            noResult: false,
+            beforeScroll: true
         }
     },
     components: {
@@ -75,8 +76,6 @@ export default {
                         this.result = arr
                     } else {
                         this.result = this.genResult(res.data)
-                        
-                        
                     }
                 }
             })
@@ -141,19 +140,27 @@ export default {
                 this.setSinger(singer)
                 this.$router.push({path:`/search/${val.singermid}`})
             } else {
-                console.log(val);
+                this.insertSong(val)
             }
+            this.$emit('select')
         },
 
         ...mapMutations({
             setSinger:'SINGER'
         }),
 
+        ...mapActions(['insertSong']),
+
         handlePlaylist(playlist) {
             const bottom = playlist.length > 0 ? '60px' : 0
             this.$refs.search.style.bottom = bottom
             this.$refs.scroll.refresh()
         },
+
+        // 滚动键盘消失
+        listbeforeScroll() {
+            this.$emit('listbeforeScroll')
+        }
     },
     
     watch: {

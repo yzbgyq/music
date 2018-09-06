@@ -28,8 +28,8 @@ import * as types from './mutations-type'
     [types.TOPLIST](state,topList){
         state.topList = topList
     },
-    [types.SEARCHTEXT](state,searchText){
-        state.searchText = searchText
+    [types.SEARCHCACHE](state,searchCache){
+        state.searchCache = searchCache
     },
 
 

@@ -1,6 +1,7 @@
 // 在一个动作中多次去改变mutation，
 // 比如一个点击事件中多次去操作mutations，
 // 往往去封装一个actions
+import {saveSearch,delectSearch,delectSearchAll} from 'js/cache'
 import * as types from './mutations-type'
 import {playMode} from 'js/config'
 import {shuffle} from 'js/utils'
@@ -36,3 +37,55 @@ export const randomPlay = function({commit},{list}) {
 }
 
 // 播放搜索的音乐
+export const insertSong = function({commit,state},song) {
+    let playlist = state.playlist.slice()
+    let sequenceList = state.sequenceList.slice()
+    let currentIndex = state.currentIndex
+    // 记录下当前歌曲
+    let currentSong = playlist[currentIndex]
+    // 看看这首歌有没有在列表里面，查找当前列表中是否有待插入的歌曲并返回其索引
+    let fpIndex = findIndex(playlist,song)
+    currentIndex++
+    playlist.splice(currentIndex,0,song)
+    if (fpIndex > -1) {  //说明列表有歌曲,把它从列表中删除
+        // 如果插入的序号大于列表中的序号
+        if (currentIndex > fpIndex) {
+            playlist.splice(fpIndex,1)
+            currentIndex--
+        } else {
+            playlist.splice(fpIndex + 1,1)
+        }
+    } 
+
+    let currentSindex = findIndex(sequenceList,song) + 1
+    let fsIndex = findIndex(sequenceList,song)
+    sequenceList.splice(currentSindex,0,song)
+    if (fsIndex > -1) {
+        if (currentSindex > fsIndex) {
+            sequenceList.splice(fsIndex,1)
+        } else {
+            sequenceList.splice(fsIndex+1,1)
+        }
+    }
+
+    commit(types.PLAYLIST,playlist)
+    commit(types.SEQUENCELIST,sequenceList)
+    commit(types.CURRENTINDEX,currentIndex)
+    commit(types.FULLSREEN,true)               
+    commit(types.PLAYING,true) 
+}
+
+// 搜索历史
+export const saveSearchHistory = function ({commit},query) {
+    commit(types.SEARCHCACHE,saveSearch(query))
+}
+
+// 删除搜索历史
+export const delectSearchHistory = function({commit},query) {
+    commit(types.SEARCHCACHE,delectSearch(query))
+}
+
+// 删除全部搜索历史
+export const delectSearchHistoryAll = function({commit}) {
+    commit(types.SEARCHCACHE,delectSearchAll())
+}

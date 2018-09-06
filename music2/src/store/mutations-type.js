@@ -9,8 +9,7 @@ export const MODE = 'MODE'
 export const CURRENTINDEX = 'CURRENTINDEX'
 export const MUSICDESC = 'MUSICDESC'
 export const TOPLIST = 'TOPLIST'
-export const SEARCHTEXT = 'SEARCHTEXT'
-
+export const SEARCHCACHE = 'SEARCHCACHE'
 
 
 

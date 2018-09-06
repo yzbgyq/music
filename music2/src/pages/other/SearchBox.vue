@@ -2,14 +2,14 @@
     <div class="search-box-wrapper">
         <div class="search-box">
             <i class="icon-search"></i>
-            <input type="text" :placeholder="placeholder" v-model="query" class="box">
+            <input ref="query" type="text" :placeholder="placeholder" v-model="query" class="box">
             <i class="icon-dismiss" v-show="query" @click="clearQuery"></i>
         </div>
     </div>
 </template>
 
 <script>
-import {debounce} from 'js/utils'
+import {debounce,throttle} from 'js/utils'
 export default {
     props:{
         placeholder:{
@@ -32,7 +32,12 @@ export default {
         
         queryText(txt) {
             this.query = txt
+        },
+
+        blurInput() {
+            this.$refs.query.blur()
         }
+        
     },
     
     created () {
@@ -41,10 +46,7 @@ export default {
                 this.$emit('queryTxt',newQuery)
             }
         },500))
-
-      
     }
-    
 }
 </script>
 
