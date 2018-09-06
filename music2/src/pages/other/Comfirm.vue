@@ -2,17 +2,16 @@
         <div>
             <transition name="bounce">
                     <div class="box" v-show="isShow">
-                        <h1 class="title">提示</h1>
+                        <h1 class="title">是否清空搜索历史</h1>
                         <ul class="border-top">
-                            <li class="border-right">确定</li>
-                            <li>取消</li>
+                            <li class="border-right" @click="ok">确定</li>
+                            <li @click="isShow = false">取消</li>
                         </ul>
                     </div>
                 
             </transition> 
              <transition name="fade">
                 <div class="comfin" v-show="isShow">
-
                 </div>
              </transition>
         </div>
@@ -22,10 +21,20 @@
 
 <script>
 export default {
-    props: {
-        isShow: {
-            type: Boolean,
-            default: false
+    data() {
+        return {
+            isShow: false
+        }
+    },
+
+    methods: {
+        showComf() {
+            this.isShow = true
+        },
+
+        ok() {
+            this.$emit('ok')
+            this.isShow = false
         }
     }
 }
@@ -65,7 +74,7 @@ export default {
         width 100%
         height 100%
         z-index 998
-        background rgba(0,0,0,.5)            
+        background rgba(0,0,0,.6)            
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
 }

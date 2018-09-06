@@ -1,32 +1,34 @@
 <template>
     <!-- 搜索历史 -->
-    <div class="search-history" v-show="searchCache && searchCache.length">
+    <div class="search-history" v-show="searchList && searchList.length">
         <h1 class="title">
-            <span class="text" @click="conf">搜索历史</span>
+            <span class="text" >搜索历史</span>
             <span class="clear" @click="delectAll"><i class="icon-clear"></i></span>
         </h1>
         <div class="search-list">
             <ul>
-                <li class="search-item" v-for="(val,index) in searchCache.slice(0,5)" :key="index" @click="select(val)">
+                <li class="search-item" v-for="(val,index) in searchList.slice(0,10)" :key="index" @click="select(val)">
                     <span class="text">{{val}}</span>
                     <span class="icon" @click.stop="delectOne(val)"><i class="icon-delete"></i></span>
                 </li>
             </ul>
         </div>
-        <Comfirm :isShow='showComfirm'/>
+        
     </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
-import Comfirm from 'other/Comfirm'
 export default {
-    computed: {
-        ...mapGetters(['searchCache'])
+    props: {
+        searchList:{
+            type: Array,
+            default: []
+        }
     },
 
     components: {
-        Comfirm,
+        
     },
     
     data() {
@@ -51,10 +53,6 @@ export default {
             this.$emit('delectAll')
         },
 
-        conf() {
-            console.log(1);
-            this.showComfirm = true
-        }
     }
 }
 </script>

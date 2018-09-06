@@ -12,7 +12,6 @@
                     <li class="nomore" v-show="totalnum==0 && result.length>20">没有更多了~~</li>
                 </ul>
             </div>
-
         </Scroll>
         <Loading v-show="isLoding"/>
         <router-view/>
@@ -63,6 +62,7 @@ export default {
             page = this.page
             this.isLoding = true
             
+            
             searchs(this.query,page,this.showSinger).then(res => {
                 if (res.code == 0) {
                     this.isLoding = false
@@ -70,7 +70,6 @@ export default {
                     if (!res.data.song.list.length) {
                         this.noResult = true
                     }
-                    console.log(res.data);
                     if (flag) {
                         const arr = [...this.result, ...this.genResult(res.data)]
                         this.result = arr

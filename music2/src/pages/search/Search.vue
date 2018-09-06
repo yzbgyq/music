@@ -1,7 +1,7 @@
 <template>
     <div class="search">
         <SearchBox ref="searchBox" @queryTxt='queryTxt'/>
-        <Shortcut :hotKeyList='hotKeyList'  @queryText='queryText' v-show="!query"/>
+        <Shortcut :hotKeyList='hotKeyList'  @queryText='queryText' v-show="!query" :query='query'/>
         <Suggest :query='query' v-show="query" @listbeforeScroll='listbeforeScroll' @select='saveSearch'/>
     </div>
 </template>
@@ -10,6 +10,7 @@
 import SearchBox from 'other/SearchBox'
 import Shortcut from './components/Shortcut'
 import Suggest from 'other/Suggest'
+import Comfirm from 'other/Comfirm'
 import {getHotKey} from 'api/search'
 import {mapActions} from 'vuex'
 export default {
