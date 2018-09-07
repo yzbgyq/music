@@ -31,6 +31,9 @@ import * as types from './mutations-type'
     [types.SEARCHCACHE](state,searchCache){
         state.searchCache = searchCache
     },
+    [types.PLAYHISTORY](state,playHistory){
+        state.playHistory = playHistory
+    },
 
 
 

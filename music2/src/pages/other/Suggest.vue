@@ -136,10 +136,7 @@ export default {
                     name: val.singername
                 })
                 this.setSinger(singer)
-                // 派发事件，让父级路由跳转页面
-                this.$router.push({
-                    path: `/search/${val.singermid}`
-                })
+                this.$router.push({path: `/search/${val.singermid}` })
             } else {
                 this.insertSong(val)
             }

@@ -128,7 +128,7 @@ export default {
         addSong() {
             setTimeout(() => {
                  this.showFlag = false
-            },400)
+            },100)
             this.$emit('addSong')
         }
     },
@@ -153,11 +153,12 @@ export default {
         top: 0;
         bottom: 0;
         background-color: rgba(0,0,0,.6);
+        z-index 100000
     .list-wrapper
         position: absolute;
         left: 0;
         bottom: 0;
-        z-index: 10000;
+        z-index: 100001;
         width: 100%;
         background-color: #333;
         .list-header

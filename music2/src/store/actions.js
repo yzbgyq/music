@@ -1,16 +1,16 @@
 // 在一个动作中多次去改变mutation，
 // 比如一个点击事件中多次去操作mutations，
 // 往往去封装一个actions
-import {saveSearch,delectSearch,delectSearchAll} from 'js/cache'
+import {saveSearch,delectSearch,delectSearchAll,savePlay} from 'js/cache'
 import * as types from './mutations-type'
 import {playMode} from 'js/config'
 import {shuffle} from 'js/utils'
 
-function findIndex(list,song) {
-    return list.findIndex(item => {
-        return item.id === song.id
+function findIndex(list, song) {
+    return list.findIndex((item) => {
+      return item.id === song.id
     })
-}
+  }
 // 选择播放一首音乐
 export const selectPlay = function({commit,state},{list,index}) {
     if (state.mode === playMode.random) {
@@ -57,7 +57,7 @@ export const insertSong = function({commit,state},song) {
         }
     } 
 
-    let currentSindex = findIndex(sequenceList,song) + 1
+    let currentSindex = findIndex(sequenceList,currentSong) + 1
     let fsIndex = findIndex(sequenceList,song)
     sequenceList.splice(currentSindex,0,song)
     if (fsIndex > -1) {
@@ -122,4 +122,10 @@ export const deleteSongAll = function({commit}) {
     commit(types.SEQUENCELIST,[])
     commit(types.CURRENTINDEX,-1)
     commit(types.PLAYING,false)
+}
+
+// 播放历史列表
+export const savePlayHistory = function({commit},song) {
+    commit(types.PLAYHISTORY,savePlay(song))
+
 }

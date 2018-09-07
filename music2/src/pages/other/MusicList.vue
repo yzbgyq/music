@@ -2,13 +2,13 @@
     <!-- 歌手的歌曲列表组件 -->
      <div class="song-list">  
          <ul>
-             <li v-for="(val,index) of songs" :key="val.id" @click='selectItem(val,index)'>
+             <li v-for="(val,index) of songs" :key="index" @click='selectItem(val,index)'>
                  <div class="rank" v-if="isRank">
                      <span :class="iconClass(index)">{{iconText(index)}}</span>
                  </div>
                  <div class="content">
-                     <h2 class="name">{{val.name}}</h2>
-                     <p class="desc">{{getDesc(val)}}</p>
+                     <h2 class="name" v-html="val.name"></h2>
+                     <p class="desc" v-html="getDesc(val)"></p>
                  </div>
              </li>
          </ul>
@@ -50,8 +50,8 @@ export default {
                 return index
             }
         }
+    },
 
-    }
 }
 </script>
 

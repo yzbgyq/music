@@ -13,7 +13,7 @@
                 <div class='top'>
                     <div class='back' @click='back'><i class='icon-back'></i></div>
                     <h1 class='title' v-html='currentSong.name'></h1>
-                    <h2 class='subtitle'>{{currentSong.singer}}</h2>
+                    <h2 class='subtitle' v-html="currentSong.singer"></h2>
                 </div>
                 <div class='middle' 
                      @touchstart.prevent='middleTouchStart'
@@ -73,7 +73,7 @@
             </div>
             <div class='text'>
                 <h2 class='name' v-html='currentSong.name'></h2>
-                <p class='desc'>{{currentSong.singer}}</p>
+                <p class='desc' v-html="currentSong.singer"></p>
             </div>
             <div class='control'>
                 <i :class='miniPlayIcon' class='icon-mini'  @click.stop='togglePlay'></i>
@@ -96,7 +96,7 @@ import animations from 'create-keyframe-animation'
 import {prefixStyle} from 'js/dom'
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
-import {mapGetters,mapMutations} from 'vuex'
+import {mapGetters,mapMutations,mapActions} from 'vuex'
 import Progress from './components/PlayProgress'
 import Playlist from './components/Playlist'
 import PlayAddSong from './components/PlayAddSong'
@@ -276,6 +276,7 @@ export default {
         // 当浏览器可以播放音频/视频时派发一个事件
         canplay() {
             this.isPlay = true; //设置歌曲可以播放
+            this.savePlayHistory(this.currentSong)
         },
 
         // 当歌曲发生播放错误时
@@ -404,7 +405,9 @@ export default {
         // 打开添加歌曲到队列页面
         addSong() {
             this.$refs.playAddSong.show()
-        }
+        },
+
+        ...mapActions(['savePlayHistory'])
     },
 
     watch: {

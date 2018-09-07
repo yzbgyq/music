@@ -1,5 +1,5 @@
 import {playMode} from 'js/config'
-import {loadSearch} from 'js/cache'
+import {loadSearch,loadPlay} from 'js/cache'
 //  所有的状态管理
 const state = {
     singer: {},                  // 歌手信息
@@ -12,6 +12,7 @@ const state = {
     musicDesc: {},               // 首页歌单列表
     topList: {},                 // 排行榜数据
     searchCache: loadSearch(),       // 搜索缓存
+    playHistory: loadPlay(),            // 播放历史
 }
 
 

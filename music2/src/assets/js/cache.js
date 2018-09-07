@@ -2,7 +2,8 @@
 import storage from 'good-storage'
 const SEARCH_KEY = '_search_'
 const MAX_LENGTH = 15
-
+const PLAY_KEY_LENGTH = 100     //100首歌曲
+const PLAY_KEY = '_play_'
 // 插入一条
 function insertArray(arr,val,compare,maxLen) {
     const index = arr.findIndex(compare)
@@ -10,7 +11,7 @@ function insertArray(arr,val,compare,maxLen) {
         return
     }
     if (index > 0) {
-        arr.splice(index,0)
+        arr.splice(index,1)
     }
     arr.unshift(val)
     if (maxLen && arr.length > maxLen) {
@@ -58,4 +59,20 @@ export function delectSearch(query) {
 export function delectSearchAll() {
     storage.remove(SEARCH_KEY)
     return []
+}
+
+// 存储播放列表
+export function savePlay(song) {
+    
+    let songs = storage.get(PLAY_KEY,[])
+    insertArray(songs,song,item => {
+        return item.id == song.id
+    },PLAY_KEY_LENGTH)
+    storage.set(PLAY_KEY,songs)
+    return songs
+}
+
+// 读取播放列表
+export function loadPlay() {
+    return storage.get(PLAY_KEY,[])
 }

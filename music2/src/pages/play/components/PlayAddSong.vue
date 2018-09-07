@@ -11,22 +11,38 @@
                 <Suggest :query='query' :showSinger='showSinger' @select='saveSearch'/>
             </div>
             <Switches :switches='list' :currentIndex='currentIndex' @switchItem='switchItem'/>
+            <div class="list-wrapper" ref="listWarpper">
+                <Scroll  class="list-scroll"  :data='playHistory' v-if="currentIndex===0" ref="scroll">
+                    <div class="list-inner"> 
+                        <MusicList :songs='playHistory' @select='selectItem'/>
+                    </div>
+                </Scroll>
+            </div>
         </div>
-        <!-- <router-view/> -->
     </transition>
 </template>
 
 <script>
 import SearchBox from 'other/SearchBox'
 import Suggest from 'other/Suggest'
-import {searchMixin} from 'js/mixin'
+import {searchMixin,playlistMixin} from 'js/mixin'
 import Switches from 'other/Switches'
+import Scroll from 'other/Scroll'
+import MusicList from 'other/MusicList'
+import {mapGetters,mapActions} from 'vuex'
+import singerDetails from 'js/singerDetailsClass'
 export default {
-    mixins: [searchMixin],
+    mixins: [searchMixin,playlistMixin],
     components: {
         SearchBox,
         Suggest,
         Switches,
+        Scroll,
+        MusicList,
+    },
+
+    computed: {
+        ...mapGetters(['playHistory'])
     },
 
     data() {
@@ -52,11 +68,25 @@ export default {
         },
 
         switchItem(index) {
-            console.log(index);
-            
             this.currentIndex = index
-        }
-    }
+        },
+
+        selectItem(val, index) {
+            if (index != 0) {
+                this.insertSong(new singerDetails(val))
+            }
+        },
+
+        handlePlaylist(playlist) {
+            const bottom = playlist.length > 0 ? '50px' : 0
+            this.$refs.listWarpper.style.bottom = bottom
+            this.$refs.scroll.refresh()
+        },
+
+        ...mapActions(['insertSong'])
+    },
+    
+ 
 }
 </script>
 
@@ -90,6 +120,16 @@ export default {
         top: 248px;
         bottom: 0;
         width: 100%
+    .list-wrapper
+        position: absolute;
+        top: 330px;
+        bottom: 0;
+        width: 100%;    
+        .list-scroll
+            height 100%
+            overflow hidden
+            .list-inner
+                padding 40px 60px
 .bounce-enter-active {
     animation: bounce-in .3s;
         }

@@ -10,6 +10,7 @@ export const CURRENTINDEX = 'CURRENTINDEX'
 export const MUSICDESC = 'MUSICDESC'
 export const TOPLIST = 'TOPLIST'
 export const SEARCHCACHE = 'SEARCHCACHE'
+export const PLAYHISTORY = 'PLAYHISTORY'
 
 
 
