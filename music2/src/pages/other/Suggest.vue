@@ -14,7 +14,6 @@
             </div>
         </Scroll>
         <Loading v-show="isLoding"/>
-        <router-view/>
     </div>
 </template>
 
@@ -131,13 +130,16 @@ export default {
         },
 
         item(val) {
-            if (val.type && val.type == 'singer') {
+            if (val.type && val.type == SINGER) {
                 const singer = new Singer({
                     id: val.singermid,
                     name: val.singername
                 })
                 this.setSinger(singer)
-                this.$router.push({path:`/search/${val.singermid}`})
+                // 派发事件，让父级路由跳转页面
+                this.$router.push({
+                    path: `/search/${val.singermid}`
+                })
             } else {
                 this.insertSong(val)
             }

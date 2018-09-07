@@ -78,7 +78,7 @@
             <div class='control'>
                 <i :class='miniPlayIcon' class='icon-mini'  @click.stop='togglePlay'></i>
             </div>
-            <div class='control'>
+            <div class='control' @click.stop="addPlaylist">
                 <i class='icon-playlist'></i>
             </div>
         </div>
@@ -86,6 +86,8 @@
         <audio ref='audio' :src='currentSong.url' @canplay='canplay' @error='error' @timeupdate='timeupdate' @ended="end">
 
         </audio>
+        <Playlist ref="playlist" @addSong='addSong'/>
+        <PlayAddSong ref="playAddSong" />
     </div>
 </template>
 
@@ -96,12 +98,14 @@ const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
 import {mapGetters,mapMutations} from 'vuex'
 import Progress from './components/PlayProgress'
+import Playlist from './components/Playlist'
+import PlayAddSong from './components/PlayAddSong'
 import {playMode} from 'js/config'
-import {shuffle} from 'js/utils'
 import lyric from 'lyric-parser'
 import Scroll from 'pages/other/Scroll'
-
+import {playMixin} from 'js/mixin'
 export default {
+    mixins:[playMixin],
     data() {
         return {
             isPlay: false,  // 控制音乐是否能播放
@@ -116,10 +120,12 @@ export default {
     components: {
         Progress,
         Scroll,
+        Playlist,
+        PlayAddSong
     },
     computed: {
         // 是否全屏 ，播放列表,当前播放的歌曲,歌曲是否在播放,当前歌曲的下标,播放模式,播放列表
-        ...mapGetters(['fullScreen','playlist','currentSong','playing','currentIndex','mode','sequenceList']),
+        ...mapGetters(['fullScreen','playlist','currentSong','playing','currentIndex','sequenceList']),
 
         playIcon() {    //暂停播放图标
             return this.playing ? 'icon-pause' : 'icon-play'
@@ -138,10 +144,7 @@ export default {
             return  this.isPlay ? '' : 'disable'
         },
 
-        // 播放模式，按钮样式
-        iconMode() {
-            return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
-        }
+        
     },
     methods: {
         back() {
@@ -152,8 +155,6 @@ export default {
             setFullScreen:'FULLSREEN',
             setPlaylist:'PLAYING',
             setCurrentIndex:'CURRENTINDEX',
-            setMode:'MODE',
-            setplayList:'PLAYLIST'
         }),
 
         open() {
@@ -298,29 +299,6 @@ export default {
             }
         },
 
-        // 播放模式的样式切换
-        changeMode() {
-            const mode = (this.mode + 1) % 3
-            this.setMode(mode)
-            let list = null
-            
-            if (mode === playMode.random) {
-                // 洗牌
-                list = shuffle(this.sequenceList)
-            } else {
-                list = this.sequenceList
-            }
-            this.restCurrentIndex(list)
-            this.setplayList(list)
-        },
-        // 当播放模式发生改变的时候
-        restCurrentIndex(list) {
-            let index = list.findIndex(item => {
-                return item.id == this.currentSong.id
-            })
-            this.setCurrentIndex(index)
-        },
-
         // 歌曲播放完切换下一首
         end() {
             if (this.mode == playMode.loop) {
@@ -416,12 +394,25 @@ export default {
             this.$refs.middleL.style.opacity = opacity
             this.$refs.middleL.style[transitionDuration] = `${timer}ms` 
 
-    },
+        },
+
+        // 打开播放列表
+        addPlaylist() {
+            this.$refs.playlist.show()
+        },
+
+        // 打开添加歌曲到队列页面
+        addSong() {
+            this.$refs.playAddSong.show()
+        }
     },
 
     watch: {
         //currentSong发生变化的时候去播放音乐
         currentSong(newSong,oldSong) {
+            if (!newSong.id) {
+                return
+            }
             // 歌曲id不变，就不播放
             if (newSong.id == oldSong.id) {
                 return
@@ -454,7 +445,7 @@ export default {
             right: 0
             top: 0
             bottom: 0
-            z-index: 150
+            z-index: 100001
             background: $color-background
             .background
                 position: absolute
@@ -614,7 +605,7 @@ export default {
             position: fixed
             left: 0
             bottom: 0
-            z-index: 180
+            z-index: 100000
             width: 100%
             height: 120px
             background: $color-highlight-background  

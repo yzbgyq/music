@@ -1,18 +1,16 @@
 <template>
         <div>
             <transition name="bounce">
-                    <div class="box" v-show="isShow">
-                        <h1 class="title">是否清空搜索历史</h1>
-                        <ul class="border-top">
-                            <li class="border-right" @click="ok">确定</li>
-                            <li @click="isShow = false">取消</li>
-                        </ul>
-                    </div>
-                
+                <div class="box" v-show="isShow">
+                    <h1 class="title">{{title}}</h1>
+                    <ul class="border-top">
+                        <li class="border-right" @click="ok">确定</li>
+                        <li @click="isShow = false">取消</li>
+                    </ul>
+                </div>
             </transition> 
              <transition name="fade">
-                <div class="comfin" v-show="isShow">
-                </div>
+                <div class="comfin" v-show="isShow"></div>
              </transition>
         </div>
 
@@ -21,6 +19,13 @@
 
 <script>
 export default {
+    props:{
+        title: {
+            type: String,
+            default: ''
+        }
+    },
+
     data() {
         return {
             isShow: false
@@ -49,7 +54,7 @@ export default {
         left 50%
         top 40%
         margin-left -35%
-        z-index 999
+        z-index 99999
         .title
             color #000
             font-size 34px
@@ -73,7 +78,7 @@ export default {
         right 0
         width 100%
         height 100%
-        z-index 998
+        z-index 99998
         background rgba(0,0,0,.6)            
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;

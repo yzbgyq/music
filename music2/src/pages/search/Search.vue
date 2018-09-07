@@ -1,22 +1,25 @@
 <template>
     <div class="search">
         <SearchBox ref="searchBox" @queryTxt='queryTxt'/>
-        <Shortcut :hotKeyList='hotKeyList'  @queryText='queryText' v-show="!query" :query='query'/>
-        <Suggest :query='query' v-show="query" @listbeforeScroll='listbeforeScroll' @select='saveSearch'/>
+        <SearchShortcut :hotKeyList='hotKeyList'  @queryText='queryText' v-show="!query" :query='query'/>
+        <Suggest :query='query' v-show="query" @listbeforeScroll='listbeforeScroll' @select='saveSearch' />
+        <router-view/>
     </div>
 </template>
 
 <script>
 import SearchBox from 'other/SearchBox'
-import Shortcut from './components/Shortcut'
+import SearchShortcut from './components/SearchShortcut'
 import Suggest from 'other/Suggest'
 import Comfirm from 'other/Comfirm'
 import {getHotKey} from 'api/search'
 import {mapActions} from 'vuex'
+import {searchMixin} from 'js/mixin'
 export default {
+    mixins: [searchMixin],
     components: {
         SearchBox,
-        Shortcut,
+        SearchShortcut,
         Suggest,
     },
 
@@ -49,13 +52,6 @@ export default {
         listbeforeScroll() {
             this.$refs.searchBox.blurInput()
         },
-
-        // 保存搜索结果到缓存
-        saveSearch() {
-            this.saveSearchHistory(this.query)
-        },
-
-        ...mapActions(['saveSearchHistory'])
     },
 
     created () {

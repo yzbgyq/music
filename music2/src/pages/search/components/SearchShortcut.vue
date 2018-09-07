@@ -14,7 +14,7 @@
                 <Storage @selectVal='selectVal' @delectOne='delectSearchHistory' @delectAll='delectAll' :searchList='searchCache'/>
             </div>
         </Scroll>
-        <Comfirm ref="comfirm" @ok='delectSearchHistoryAll'/>
+        <Comfirm ref="comfirm" @ok='delectSearchHistoryAll' title="是否清空搜索历史"/>
     </div>
 </template>
 
@@ -67,13 +67,10 @@ export default {
             this.$refs.comfirm.showComf()
         },
         handlePlaylist(playlist) {
-            console.log(1144545);
-            
             const bottom = playlist.length > 0 ? '60px' : 0
             this.$refs.shortcuts.style.bottom = bottom
             this.$refs.scroll.refresh()
         },
-
     },
 
     watch: {
@@ -112,4 +109,3 @@ export default {
                     font-size: 28px;
                     color: hsla(0,0%,100%,.3);
 </style>
-
