@@ -14,6 +14,7 @@ export const musicDesc = state => state.musicDesc
 export const topList = state => state.topList
 export const searchCache = state => state.searchCache
 export const playHistory = state => state.playHistory
+export const iLikeSongs = state => state.iLikeSongs
 
 
 

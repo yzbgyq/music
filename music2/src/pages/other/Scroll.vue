@@ -34,6 +34,10 @@ export default {
     beforeScroll: {
       type: Boolean,
       default: false
+    },
+    timer :{
+      type: Number,
+      default: 20
     }
   },
   methods: {
@@ -95,7 +99,7 @@ export default {
       //监听传入进来的data数据的变化，重新就算高度
       setTimeout(() => {
         this.refresh();
-      }, 20);
+      }, this.timer);
     }
   }
 };

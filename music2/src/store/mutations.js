@@ -34,6 +34,10 @@ import * as types from './mutations-type'
     [types.PLAYHISTORY](state,playHistory){
         state.playHistory = playHistory
     },
+    [types.ILIKESONGS](state,iLikeSongs){
+        state.iLikeSongs = iLikeSongs
+    },
+
 
 
 

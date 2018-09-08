@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+import vConsole from 'vconsole'
+
 import 'babel-polyfill'
 Vue.config.productionTip = false
 
@@ -14,6 +16,8 @@ import VueWechatTitle from 'vue-wechat-title'
 import FastClick from 'fastclick'
 FastClick.attach(document.body);
 Vue.use(VueWechatTitle)
+
+
 new Vue({
   el: '#app',
   router,

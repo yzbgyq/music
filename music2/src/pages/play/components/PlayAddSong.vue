@@ -10,14 +10,20 @@
             <div class="search-result" v-show="query">
                 <Suggest :query='query' :showSinger='showSinger' @select='saveSearch'/>
             </div>
-            <Switches :switches='list' :currentIndex='currentIndex' @switchItem='switchItem'/>
-            <div class="list-wrapper" ref="listWarpper">
-                <Scroll  class="list-scroll"  :data='playHistory' v-if="currentIndex===0" ref="scroll">
+            <Switches :switches='list' :currentIndex='currentIndex' @switchItem='switchItem' v-if="!query"/>
+            <div class="list-wrapper" ref="listWarpper" v-if="!query">
+                <Scroll  class="list-scroll"  :data='playHistory' v-if="currentIndex===0" ref="scroll" >
                     <div class="list-inner"> 
                         <MusicList :songs='playHistory' @select='selectItem'/>
                     </div>
                 </Scroll>
+                <Scroll v-if="currentIndex===0" :data='searchCache' class="list-scroll" ref="scroll2">
+                    <div class="list-inner2">
+                        <Storage :searchList='searchCache' @selectVal='selectVal' @delectOne='delectSearchHistory' @delectAll='delectAll'/>
+                    </div>
+                </Scroll>
             </div>
+            <Comfirm ref="comfirm" @ok='delectSearchHistoryAll' title="是否清空搜索历史"/>
         </div>
     </transition>
 </template>
@@ -25,24 +31,28 @@
 <script>
 import SearchBox from 'other/SearchBox'
 import Suggest from 'other/Suggest'
-import {searchMixin,playlistMixin} from 'js/mixin'
+import {searchMixin} from 'js/mixin'
 import Switches from 'other/Switches'
 import Scroll from 'other/Scroll'
 import MusicList from 'other/MusicList'
+import Storage from 'other/Storage'
+import Comfirm from 'other/Comfirm'
 import {mapGetters,mapActions} from 'vuex'
 import singerDetails from 'js/singerDetailsClass'
 export default {
-    mixins: [searchMixin,playlistMixin],
+    mixins: [searchMixin],
     components: {
         SearchBox,
         Suggest,
         Switches,
         Scroll,
         MusicList,
+        Storage,
+        Comfirm,
     },
 
     computed: {
-        ...mapGetters(['playHistory'])
+        ...mapGetters(['playHistory','searchCache'])
     },
 
     data() {
@@ -54,33 +64,27 @@ export default {
                 {id:0,title:'最近播放'},
                 {id:1,title:'搜索历史'}
             ],
-            currentIndex: 0
+            currentIndex: 0,
+            timer: 100
         }
     },
 
     methods: {
         show() {
             this.showFlag = true
+            setTimeout(() => {
+               this.currentIndex == 0 ? this.$refs.scroll.refresh() : this.$refs.scroll2.refresh()
+            },20)
         },
 
         querys(txt) {
             this.query = txt
         },
 
-        switchItem(index) {
-            this.currentIndex = index
-        },
-
         selectItem(val, index) {
             if (index != 0) {
                 this.insertSong(new singerDetails(val))
             }
-        },
-
-        handlePlaylist(playlist) {
-            const bottom = playlist.length > 0 ? '50px' : 0
-            this.$refs.listWarpper.style.bottom = bottom
-            this.$refs.scroll.refresh()
         },
 
         ...mapActions(['insertSong'])
@@ -130,6 +134,8 @@ export default {
             overflow hidden
             .list-inner
                 padding 40px 60px
+            .list-inner2
+                padding 0  
 .bounce-enter-active {
     animation: bounce-in .3s;
         }

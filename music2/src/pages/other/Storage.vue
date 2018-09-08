@@ -6,12 +6,12 @@
             <span class="clear" @click="delectAll"><i class="icon-clear"></i></span>
         </h1>
         <div class="search-list">
-            <ul>
+            <transition-group tag="ul" name="list">
                 <li class="search-item" v-for="(val,index) in searchList.slice(0,10)" :key="index" @click="select(val)">
                     <span class="text">{{val}}</span>
                     <span class="icon" @click.stop="delectOne(val)"><i class="icon-delete"></i></span>
                 </li>
-            </ul>
+            </transition-group>
         </div>
         
     </div>
@@ -79,6 +79,10 @@ export default {
             align-items: center;
             height: 80px;
             overflow: hidden;
+            &.list-enter-active, &.list-leave-active 
+                transition all .1s linear
+            &.list-enter, &.list-leave-to
+                height 0
             .text
                 flex: 1;
                 color: hsla(0,0%,100%,.5);

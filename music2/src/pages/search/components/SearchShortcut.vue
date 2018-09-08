@@ -22,17 +22,17 @@
 import Storage from 'pages/other/Storage'
 import Scroll from 'pages/other/Scroll'
 import Comfirm from 'other/Comfirm'
-import {mapActions,mapGetters} from 'vuex'
-import {playlistMixin} from 'js/mixin'
+import {mapGetters} from 'vuex'
+import {playlistMixin,searchMixin} from 'js/mixin'
 
 export default {
-    mixins:[playlistMixin],
+    mixins:[playlistMixin,searchMixin],
     props: {
         hotKeyList:{
             type: Array,
             default:[]
         },
-        query: {
+        queryString: {
             type: String,
             default: ''
         }
@@ -57,15 +57,9 @@ export default {
             this.$emit('queryText',txt)
         },
 
-        selectVal(val) {
-            this.$emit('queryText',val)
-        },
-        ...mapActions(['delectSearchHistory','delectSearchHistoryAll']),
+        
 
-        // 删除全部
-        delectAll() {
-            this.$refs.comfirm.showComf()
-        },
+        
         handlePlaylist(playlist) {
             const bottom = playlist.length > 0 ? '60px' : 0
             this.$refs.shortcuts.style.bottom = bottom
@@ -74,7 +68,7 @@ export default {
     },
 
     watch: {
-        query(newQuery) {
+        queryString(newQuery) {
             if (!newQuery) {
                 setTimeout(() => {
                     this.$refs.scroll.refresh()

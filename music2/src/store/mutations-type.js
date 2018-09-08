@@ -11,7 +11,7 @@ export const MUSICDESC = 'MUSICDESC'
 export const TOPLIST = 'TOPLIST'
 export const SEARCHCACHE = 'SEARCHCACHE'
 export const PLAYHISTORY = 'PLAYHISTORY'
-
+export const ILIKESONGS = 'ILIKESONGS'
 
 
 

@@ -75,18 +75,54 @@ export const searchMixin = {
       query: ''
     }
   },
-  computed: {
-
-  },
-
   methods: {
-    ...mapActions(['saveSearchHistory']),
+    ...mapActions(['saveSearchHistory','delectSearchHistory','delectSearchHistoryAll']),
     
     // 保存搜索结果到缓存
     saveSearch() {
         this.saveSearchHistory(this.query)
     },
 
+    selectVal(val) {
+      this.$emit('queryText',val)
+    },
     
+    // 删除全部
+    delectAll() {
+        this.$refs.comfirm.showComf()
+    },
+
+    switchItem(index) {
+      this.currentIndex = index
+    },
   }
+}
+
+export const likeMixin = {
+    computed:{
+      ...mapGetters(['iLikeSongs'])
+    },
+    methods: {
+      // 加入收藏和取消收藏
+      ...mapActions(['iLikeSong','deleteLikes']),
+
+      // 添加到收藏
+      addLike(song) {
+        return this.iLike(song) ? this.deleteLikes(song) : this.iLikeSong(song)
+      },
+
+      // clsaa
+      getLike(song) {
+        return this.iLike(song) ? 'icon-favorite' : 'icon-not-favorite'
+      },
+
+      // 判断是否已经收藏
+      iLike(song) {
+        // 判断这个数组里面有没有这条id
+        const index = this.iLikeSongs.findIndex(item => {
+          return song.id === item.id
+        })
+        return index > -1
+      }
+    }
 }

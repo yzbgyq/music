@@ -57,7 +57,7 @@
                         <i class="icon-next" @click='next'></i>
                     </div>
                     <div class="icon i-right">
-                        <i class="icon icon-not-favorite"></i>
+                        <i class="icon" @click="addLike(currentSong)" :class="getLike(currentSong)"></i>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
             </div>
         </div>
         </transition>
-        <audio ref='audio' :src='currentSong.url' @canplay='canplay' @error='error' @timeupdate='timeupdate' @ended="end">
+        <audio ref='audio' :src='currentSong.url' @play='canplay' @error='error' @timeupdate='timeupdate' @ended="end">
 
         </audio>
         <Playlist ref="playlist" @addSong='addSong'/>
@@ -103,9 +103,9 @@ import PlayAddSong from './components/PlayAddSong'
 import {playMode} from 'js/config'
 import lyric from 'lyric-parser'
 import Scroll from 'pages/other/Scroll'
-import {playMixin} from 'js/mixin'
+import {playMixin,likeMixin} from 'js/mixin'
 export default {
-    mixins:[playMixin],
+    mixins:[playMixin,likeMixin],
     data() {
         return {
             isPlay: false,  // 控制音乐是否能播放
@@ -115,6 +115,7 @@ export default {
             currentShow: 'cd',  //默认选中哪一个
             touch:{},
             playingLyric:'' ,   //一行一行的歌词
+            timer: null
         }
     },
     components: {
@@ -238,6 +239,7 @@ export default {
             }
             if (this.playlist.length === 1) {
                 this.loop()
+                return
             } else {
                 let index = this.currentIndex - 1
                     if (index == -1) {
@@ -259,6 +261,7 @@ export default {
             }
             if (this.playlist.length === 1) {
                 this.loop()
+                return
             } else {
                 let index = this.currentIndex + 1
                 if (index == this.playlist.length) {
@@ -320,6 +323,9 @@ export default {
         // 获取歌词
         getLyric() {
             this.currentSong.getLyric().then(res => {
+                if (this.currentSong.lyric !== res) {
+                    return
+                }
                 this.currentLyric = new lyric(res,this.handleLyric)
                 if (this.playing) {
                     this.currentLyric.play()
@@ -407,7 +413,9 @@ export default {
             this.$refs.playAddSong.show()
         },
 
-        ...mapActions(['savePlayHistory'])
+        ...mapActions(['savePlayHistory','iLikeSong']),
+
+        
     },
 
     watch: {
@@ -422,8 +430,12 @@ export default {
             }
             if (this.currentLyric) {
                 this.currentLyric.stop()
+                this.currentTime = 0
+                this.currentLyric = ''
+                this.currentLineNum = 0
             }
-            setTimeout(() => {
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() => {
                  this.$refs.audio.play()
                  this.getLyric()    // 获取歌词
             },1000)
@@ -448,7 +460,7 @@ export default {
             right: 0
             top: 0
             bottom: 0
-            z-index: 100001
+            z-index 200
             background: $color-background
             .background
                 position: absolute
@@ -589,6 +601,9 @@ export default {
                         text-align left    
                         .icon-next,.icon-not-favorite
                             font-size 60px  
+                        .icon-favorite
+                            font-size 60px
+                            color #d93f30    
                     .disable
                         color rgba(255,255,49,.5)      
             &.normal-enter-active, .normal-leave-active
@@ -608,7 +623,7 @@ export default {
             position: fixed
             left: 0
             bottom: 0
-            z-index: 100000
+            z-index: 1000
             width: 100%
             height: 120px
             background: $color-highlight-background  

@@ -2,7 +2,9 @@
   <div id="app">
     <BaseHeader/>
     <BaseTab/>
-    <router-view/>
+    <keep-alive>
+        <router-view/>
+    </keep-alive>
     <Play/>
   </div>
 </template>

@@ -14,7 +14,7 @@
                         <li class="item" ref="listItem" v-for="(val,index) in sequenceList" :key="val.id" @click="playSong(val,index)">
                             <i class="current" :class="getCurrentIcon(val)"></i>
                             <span class="text" v-html="val.name"></span>
-                            <span class="like"><i class="icon-not-favorite"></i></span>
+                            <span class="like"><i class="icon" :class="getLike(val)" @click.stop="addLike(val)"></i></span>
                             <span class="delete" @click.stop="deleteOne(val)"><i class="icon-delete"></i></span>
                         </li>
                     </transition-group>
@@ -42,10 +42,10 @@
 import {mapGetters,mapMutations,mapActions} from 'vuex'
 import {playMode} from 'js/config'
 import Scroll from 'other/Scroll'
-import {playMixin} from 'js/mixin'
+import {playMixin,likeMixin} from 'js/mixin'
 import Comfirm from 'other/Comfirm'
 export default {
-    mixins:[playMixin],
+    mixins:[playMixin,likeMixin],
     computed: {
         ...mapGetters(['sequenceList','currentSong','mode','playlist']),
         textInfo() {
@@ -171,6 +171,7 @@ export default {
                     margin-right: 20px;
                     font-size: 60px;
                     color: rgba(255,205,49,.5);
+                   
                 .text
                     flex: 1;
                     font-size: 28px;
@@ -211,6 +212,8 @@ export default {
                         margin-right: 30px;
                         font-size: 24px;
                         color: #ffcd32;    
+                        .icon-favorite
+                            color #d93f30   
                     .delete
                         position: relative;
                         font-size: 24px;

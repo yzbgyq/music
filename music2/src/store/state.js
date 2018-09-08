@@ -1,5 +1,5 @@
 import {playMode} from 'js/config'
-import {loadSearch,loadPlay} from 'js/cache'
+import {loadSearch,loadPlay,getLike} from 'js/cache'
 //  所有的状态管理
 const state = {
     singer: {},                  // 歌手信息
@@ -13,6 +13,7 @@ const state = {
     topList: {},                 // 排行榜数据
     searchCache: loadSearch(),       // 搜索缓存
     playHistory: loadPlay(),            // 播放历史
+    iLikeSongs: getLike(),              // 我喜欢的歌曲收藏
 }
 
 

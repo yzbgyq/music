@@ -4,6 +4,7 @@ const SEARCH_KEY = '_search_'
 const MAX_LENGTH = 15
 const PLAY_KEY_LENGTH = 100     //100首歌曲
 const PLAY_KEY = '_play_'
+const I_LIKE = '_like_' //我喜欢的
 // 插入一条
 function insertArray(arr,val,compare,maxLen) {
     const index = arr.findIndex(compare)
@@ -63,7 +64,6 @@ export function delectSearchAll() {
 
 // 存储播放列表
 export function savePlay(song) {
-    
     let songs = storage.get(PLAY_KEY,[])
     insertArray(songs,song,item => {
         return item.id == song.id
@@ -75,4 +75,29 @@ export function savePlay(song) {
 // 读取播放列表
 export function loadPlay() {
     return storage.get(PLAY_KEY,[])
+}
+
+// 点击加入收藏
+export function iLikeSongFun(song) {
+    let songs = storage.get(I_LIKE,[])
+    insertArray(songs,song, item => {
+        return item.id == song.id
+    },PLAY_KEY_LENGTH)
+    storage.set(I_LIKE,songs)
+    return songs
+}
+
+// 读取收藏列表
+export function getLike() {
+    return storage.get(I_LIKE,[])
+}
+
+// 删除收藏单条
+export function deleteLike(song) {
+    let songs = storage.get(I_LIKE,[])
+    delectFormArr(songs,item => {
+        return song.id == item.id
+    })
+    storage.set(I_LIKE,songs)
+    return songs
 }

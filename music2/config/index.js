@@ -52,8 +52,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 
-    productionSourceMap: true,
-    devtool: '#source-map',
+    // productionSourceMap: true,
+    // devtool: '#source-map',
     productionGzip: true, //开启gzip压缩
     productionGzipExtensions: ['js', 'css'],
     bundleAnalyzerReport: process.env.npm_config_report

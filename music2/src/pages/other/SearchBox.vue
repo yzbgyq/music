@@ -73,6 +73,7 @@ export default {
                 color: #fff;
                 font-size: 28px;
                 outline: 0;    
+                height: 60px;
             .icon-dismiss
                 color: #eee;
                 font-size 32px

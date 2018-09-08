@@ -1,7 +1,7 @@
 // 在一个动作中多次去改变mutation，
 // 比如一个点击事件中多次去操作mutations，
 // 往往去封装一个actions
-import {saveSearch,delectSearch,delectSearchAll,savePlay} from 'js/cache'
+import {saveSearch,delectSearch,delectSearchAll,savePlay,iLikeSongFun,deleteLike} from 'js/cache'
 import * as types from './mutations-type'
 import {playMode} from 'js/config'
 import {shuffle} from 'js/utils'
@@ -127,5 +127,14 @@ export const deleteSongAll = function({commit}) {
 // 播放历史列表
 export const savePlayHistory = function({commit},song) {
     commit(types.PLAYHISTORY,savePlay(song))
+}
 
+// 点击加入收藏的
+export const iLikeSong = function ({commit},song) {
+    commit(types.ILIKESONGS,iLikeSongFun(song))
+}
+
+// 点击取消收藏
+export const deleteLikes = function({commit},song) {
+    commit(types.ILIKESONGS,deleteLike(song))
 }
