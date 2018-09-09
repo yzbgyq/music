@@ -5,7 +5,7 @@
                 <i class="icon-back"></i>
             </router-link>
             <div class="switches-wrapper">
-                <Switches :switches='list' :currentIndex='currentIndex' @switchItem='switchItem' />
+                <BaseSwitches :switches='list' :currentIndex='currentIndex' @switchItem='switchItem' />
             </div>
             <div class="play-btn" @click="random">
                 <i class="icon-play"></i>
@@ -17,9 +17,9 @@
                         <MusicList :songs='iLikeSongs' @select='selectItem'/>
                     </div>
                 </Scroll>
-                <Scroll :data='iLikeSongs' v-else ref="scroll2" class="list-scroll">
+                <Scroll :data='playHistory' v-if="currentIndex===1" ref="scroll2" class="list-scroll">
                     <div class="list-item">
-                        <MusicList :songs='playHistory' @select='selectItem'/>
+                        <MusicList :songs='playHistory' @select='selectItem2'/>
                     </div>
                 </Scroll>
             </div>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import Switches from 'other/Switches'
+import BaseSwitches from 'other/BaseSwitches'
 import {searchMixin,playMixin} from 'js/mixin'
 import MusicList from 'other/MusicList'
 import Scroll from 'other/Scroll'
@@ -37,7 +37,7 @@ import singerDetails from 'js/singerDetailsClass'
 export default {
     mixins: [searchMixin],
     components: {
-        Switches,
+        BaseSwitches,
         MusicList,
         Scroll,
     },
@@ -52,18 +52,36 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['randomPlay']),
+        ...mapActions(['randomPlay','selectPlay']),
 
         handlePlaylist() {
             const bottom = this.playlist.length > 0 ? '50px' : 0
             this.$refs.listWarpper.style.bottom = bottom
-            this.$refs.scroll.refresh()
+            setTimeout(() => {
+                   this.currentIndex === 0 ? this.$refs.scroll.refresh() : this.$refs.scroll2.refresh()
+            }, 20);
+         
         },
 
         selectItem(val,index) {
-            
+            let list = this.iLikeSongs.map( item => {
+                return new singerDetails(item)
+            })
+            this.selectPlay({
+                list:list,    //整个歌曲列表
+                index
+            })
         },
 
+        selectItem2(val,index) {
+            let list = this.playHistory.map( item => {
+                return new singerDetails(item)
+            })
+            this.selectPlay({
+                list:list,    //整个歌曲列表
+                index
+            })
+        },
         
         // 随机播放歌曲
         random() {

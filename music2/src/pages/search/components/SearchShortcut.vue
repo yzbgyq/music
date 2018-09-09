@@ -14,14 +14,14 @@
                 <Storage @selectVal='selectVal' @delectOne='delectSearchHistory' @delectAll='delectAll' :searchList='searchCache'/>
             </div>
         </Scroll>
-        <Comfirm ref="comfirm" @ok='delectSearchHistoryAll' title="是否清空搜索历史"/>
+        <BaseComfirm ref="comfirm" @ok='delectSearchHistoryAll' title="是否清空搜索历史"/>
     </div>
 </template>
 
 <script>
 import Storage from 'pages/other/Storage'
 import Scroll from 'pages/other/Scroll'
-import Comfirm from 'other/Comfirm'
+import BaseComfirm from 'other/BaseComfirm'
 import {mapGetters} from 'vuex'
 import {playlistMixin,searchMixin} from 'js/mixin'
 
@@ -41,7 +41,7 @@ export default {
     components: {
         Scroll,
         Storage,
-        Comfirm
+        BaseComfirm
     },
     
     computed: {

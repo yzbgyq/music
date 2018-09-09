@@ -322,6 +322,8 @@ export default {
 
         // 获取歌词
         getLyric() {
+            console.log(this.currentSong);
+            
             this.currentSong.getLyric().then(res => {
                 if (this.currentSong.lyric !== res) {
                     return

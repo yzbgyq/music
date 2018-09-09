@@ -33,7 +33,7 @@
     <transition name="fade">
         <div class="playlist" v-show="showFlag" @click="showFlag=false"></div>
     </transition>
-    <Comfirm ref="comfirm" @ok='ok' title="是否清空播放列表"/>
+    <BaseComfirm ref="comfirm" @ok='ok' title="是否清空播放列表"/>
 </div>
 
 </template>
@@ -43,7 +43,7 @@ import {mapGetters,mapMutations,mapActions} from 'vuex'
 import {playMode} from 'js/config'
 import Scroll from 'other/Scroll'
 import {playMixin,likeMixin} from 'js/mixin'
-import Comfirm from 'other/Comfirm'
+import BaseComfirm from 'other/BaseComfirm'
 export default {
     mixins:[playMixin,likeMixin],
     computed: {
@@ -55,7 +55,7 @@ export default {
 
     components: {
         Scroll,
-        Comfirm
+        BaseComfirm
     },
 
     data() {

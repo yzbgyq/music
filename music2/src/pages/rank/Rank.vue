@@ -67,7 +67,7 @@ export default {
  .rank
     position: fixed;
     width: 100%;
-    top: 156px;
+    top: 176px;
     bottom: 0;
     .toplist
         height: 100%;

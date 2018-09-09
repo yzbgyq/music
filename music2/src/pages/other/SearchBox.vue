@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {debounce,throttle} from 'js/utils'
+import {throttle} from 'js/utils'
 export default {
     props:{
         placeholder:{
@@ -41,12 +41,25 @@ export default {
     },
     
     created () {
-        this.$watch('query',debounce((newQuery) => {
+        // this.$watch('query',debounce((newQuery) => {
+        //     if (this.query) {
+        //         this.$emit('queryTxt',newQuery)
+        //     }
+        // },500))
+        this.$watch('query',throttle((newQuery) => {
             if (this.query) {
                 this.$emit('queryTxt',newQuery)
             }
-        },500))
-    }
+        },500,1000))
+
+        // this.$watch('query',newQuery => {
+        //     if (this.query) {
+        //         this.$emit('queryTxt',newQuery)
+        //     }
+        // })
+    },
+
+
 }
 </script>
 

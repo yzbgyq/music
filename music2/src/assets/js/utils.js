@@ -8,33 +8,7 @@ const chunk = (arr, size) =>
     arr.slice(i * size, i * size + size)
 );
 
-/**
- * 函数节流方法
- * @param Function fn 延时调用函数
- * @param Number delay 延迟多长时间
- * @param Number atleast 至少多长时间触发一次
- * @return Function 延迟执行的方法
- */
-const throttle = (fn,delay,atleast) => {
-    let timer = null
-    let previous = null
-    return () => {
-        let now = +new Date()
-        if (!previous) {
-            previous = now
-        }
-        if (atleast && now - previous > atleast) {
-            fn()
-            //重置上一次开始时间为本次结束时间
-            previous = now
-        } else {
-            clearTimeout(timer)
-            timer = setTimeout(() => {
-                fn()
-            },delay)
-        }
-    }
-}
+
 
 
 /**
@@ -94,27 +68,40 @@ const getRandomInt = function(min,max) {
     return (Math.random() * (max - min + 1) + min) | 0
 }
 
+
 /**
- * 函数节流
- * @param func 需要节流的函数
- * @param delay 时间
+ * 函数节流方法
+ * @param Function fn 延时调用函数
+ * @param Number delay 延迟多长时间
+ * @param Number atleast 至少多长时间触发一次
+ * @return Function 延迟执行的方法
  */
-const debounce = function(func,delay) {
-    let timer
-    return function(...args)  {
-        if (timer) {
+// atleast要大于dalay
+const throttle = (fn,dalay,atleast=0) => {
+    let timer = null;
+    let previous = null;
+    return (...args) =>{
+        let now = +new Date()	//获取当前时间戳
+        !previous ? now : previous
+        if (atleast && now - previous > atleast ) {
+             fn.apply(this,args)
+                // 重置上一次开始时间为本次结束时间
+              previous = now;
+              clearTimeout(timer)
+        } else {
             clearTimeout(timer)
+            timer = setTimeout(() => {
+                fn.apply(this,args)
+                previous = null
+            },dalay)
         }
-        timer = setTimeout(() => {
-            func.apply(this,args)
-        },delay)
     }
 }
+
 export {
     chunk,  //数组分块
     throttle,  //函数节流
     prefix,    //各种浏览器的css前缀
     getRandomInt,   //获取多少道多少之间的随机整数
     shuffle,    //数组随机打乱(洗牌函数)
-    debounce,//函数节流
 }

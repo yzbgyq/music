@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import vConsole from 'vconsole'
+// import vConsole from 'vconsole'
 
 import 'babel-polyfill'
 Vue.config.productionTip = false

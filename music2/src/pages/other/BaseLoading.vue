@@ -10,11 +10,11 @@
       title: {
         type: String,
         default: '正在加载中...'
-      }
+      } 
     },
     data() {
       return {
-        loading:require('img/Spinner.gif')
+        loading:require('../../assets/image/Spinner.gif')
       }
     }
   }
@@ -28,4 +28,4 @@
       line-height: 20px
       font-size $font-size-small
       color: $color-text-l
-</style>
+</style> 

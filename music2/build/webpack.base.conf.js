@@ -32,7 +32,7 @@ module.exports = {
       'static':resolve('static'),
       'api':resolve('src/api'),
       'img':resolve('static/img'),
-      'other':resolve('src/pages/other'),
+      'other':resolve('src/pages/other')
     }
   },
   module: {

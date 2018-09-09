@@ -10,20 +10,20 @@
             <div class="search-result" v-show="query">
                 <Suggest :query='query' :showSinger='showSinger' @select='saveSearch'/>
             </div>
-            <Switches :switches='list' :currentIndex='currentIndex' @switchItem='switchItem' v-if="!query"/>
+            <BaseSwitches :switches='list' :currentIndex='currentIndex' @switchItem='switchItem' v-if="!query"/>
             <div class="list-wrapper" ref="listWarpper" v-if="!query">
                 <Scroll  class="list-scroll"  :data='playHistory' v-if="currentIndex===0" ref="scroll" >
                     <div class="list-inner"> 
                         <MusicList :songs='playHistory' @select='selectItem'/>
                     </div>
                 </Scroll>
-                <Scroll v-if="currentIndex===0" :data='searchCache' class="list-scroll" ref="scroll2">
+                <Scroll v-if="currentIndex===1" :data='searchCache' class="list-scroll" ref="scroll2">
                     <div class="list-inner2">
                         <Storage :searchList='searchCache' @selectVal='selectVal' @delectOne='delectSearchHistory' @delectAll='delectAll'/>
                     </div>
                 </Scroll>
             </div>
-            <Comfirm ref="comfirm" @ok='delectSearchHistoryAll' title="是否清空搜索历史"/>
+            <BaseComfirm ref="comfirm" @ok='delectSearchHistoryAll' title="是否清空搜索历史"/>
         </div>
     </transition>
 </template>
@@ -32,11 +32,11 @@
 import SearchBox from 'other/SearchBox'
 import Suggest from 'other/Suggest'
 import {searchMixin} from 'js/mixin'
-import Switches from 'other/Switches'
+import BaseSwitches from 'other/BaseSwitches'
 import Scroll from 'other/Scroll'
 import MusicList from 'other/MusicList'
 import Storage from 'other/Storage'
-import Comfirm from 'other/Comfirm'
+import BaseComfirm from 'other/BaseComfirm'
 import {mapGetters,mapActions} from 'vuex'
 import singerDetails from 'js/singerDetailsClass'
 export default {
@@ -44,11 +44,11 @@ export default {
     components: {
         SearchBox,
         Suggest,
-        Switches,
+        BaseSwitches,
         Scroll,
         MusicList,
         Storage,
-        Comfirm,
+        BaseComfirm,
     },
 
     computed: {
